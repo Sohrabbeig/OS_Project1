@@ -98,4 +98,15 @@ int sys_getppid(void){
    return proc->parent->pid;
 }
 
+int sys_getPerformanceData(void){
+
+  char *rtime;
+  char *wtime;
+  argstr(0,&rtime);
+  argstr(1,&wtime);
+  *rtime=proc->rtime;
+  *wtime=proc->etime - proc->ctime - proc->rtime;
+  return 0;
+}
+
 //end my

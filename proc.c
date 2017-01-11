@@ -73,6 +73,17 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
+
+
+
+  //my
+  uint xticks;
+  acquire(&tickslock);
+  xticks = ticks;
+  release(&tickslock);
+  p->ctime = xticks;
+  p->rtime = 0;
+
   return p;
 }
 
@@ -223,6 +234,14 @@ exit(void)
   proc->state = ZOMBIE;
   sched();
   panic("zombie exit");
+
+  //my
+  uint xticks;
+  acquire(&tickslock);
+  xticks = ticks;
+  release(&tickslock);
+  p->etime = xticks;
+
 }
 
 // Wait for a child process to exit and return its pid.

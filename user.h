@@ -24,7 +24,9 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 //my
+
 int getppid(void);
+int getPerformanceData(int*, int*);
 //end my
 
 

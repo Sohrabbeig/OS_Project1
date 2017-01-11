@@ -31,4 +31,5 @@ SYSCALL(sleep)
 SYSCALL(uptime)
 //my
 SYSCALL(getppid)
+SYSCALL(getPerformanceData)
 //end my

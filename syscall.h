@@ -22,4 +22,5 @@
 #define SYS_close  21
 //my
 #define SYS_getppid 22
+#define SYS_getPerformanceData 23
 //end my

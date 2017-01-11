@@ -100,6 +100,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 //my
 extern int sys_getppid(void);
+extern int sys_getPerformanceData(void);
 //end my
 
 static int (*syscalls[])(void) = {
@@ -125,6 +126,7 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 /*my*/[SYS_getppid] sys_getppid,/*end my*/
+/*my*/[SYS_getPerformanceData] sys_getPerformanceData,/*end my*/
 };
 
 void
