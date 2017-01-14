@@ -52,6 +52,7 @@ trap(struct trapframe *tf)
       acquire(&tickslock);
       ticks++;
 
+
 	//my
 	if(proc && proc->state==RUNNING)
 	    proc->rtime++;

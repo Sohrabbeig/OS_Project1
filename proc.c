@@ -73,15 +73,7 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
-
-
-
-  //my
-  uint xticks;
-  acquire(&tickslock);
-  xticks = ticks;
-  release(&tickslock);
-  p->ctime = xticks;
+  p->ctime = ticks;
   p->rtime = 0;
 
   return p;
@@ -232,6 +224,7 @@ exit(void)
 
   // Jump into the scheduler, never to return.
   proc->state = ZOMBIE;
+  proc->etime = ticks;
   sched();
   panic("zombie exit");
 
@@ -295,8 +288,8 @@ wait(void)
 //  - swtch to start running that process
 //  - eventually that process transfers control
 //      via swtch back to the scheduler.
-void
-scheduler(void)
+
+void scheduler(void)
 {
   struct proc *p;
 
