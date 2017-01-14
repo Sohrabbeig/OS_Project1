@@ -7,7 +7,134 @@
 #include "proc.h"
 #include "spinlock.h"
 
+//my
 int policy=0;
+
+
+struct proc* queue[MAX];
+struct proc* queue1[MAX];
+struct proc* queue2[MAX];
+int front = 0;
+int rear = -1;
+int itemCount = 0;
+int front1 = 0;
+int rear1 = -1;
+int itemCount1 = 0;
+int front2 = 0;
+int rear2 = -1;
+int itemCount2 = 0;
+
+struct proc* peek(int qn) {
+    if(qn==0)
+        return queue[front];
+    else if(qn==1)
+        return queue1[front1];
+
+    return queue2[front2];
+
+    if(qn==0)
+        return ;
+    else if(qn==1)
+        return ;
+
+    return ;
+}
+
+bool isEmpty(int qn) {
+    if(qn==0)
+        return itemCount == 0;
+    else if(qn==1)
+        return itemCount1 == 0;
+
+
+    return itemCount2 == 0;
+}
+
+bool isFull(int qn) {
+    if(qn==0)
+        return itemCount == MAX;
+    else if(qn==1)
+        return itemCount1 == MAX;
+
+    return itemCount2 == MAX;
+}
+
+int size(int qn) {
+    if(qn==0)
+        return itemCount;
+    else if(qn==1)
+        return itemCount1;
+
+    return itemCount2;
+}
+
+void insert(struct proc* data,int qn) {
+
+    if(!isFull(qn)) {
+
+        if (qn == 0) {
+            if (rear == MAX - 1)
+                rear = -1;
+
+            queue[++rear] = data;
+            itemCount++;
+        }
+        else if (qn == 1) {
+            if (rear1 == MAX - 1)
+                rear1 = -1;
+
+            queue1[++rear1] = data;
+            itemCount1++;
+        } else{
+            if (rear2 == MAX - 1)
+                rear2 = -1;
+
+            queue2[++rear2] = data;
+            itemCount2++;
+        }
+    }
+}
+
+struct proc* removeData(int qn) {
+
+
+    struct proc *data;
+    if (qn == 0) {
+        data = queue[front++];
+
+        if (front == MAX) {
+            front = 0;
+        }
+
+        itemCount--;
+    }
+    else if (qn == 1) {
+        data = queue1[front1++];
+
+        if (front1 == MAX) {
+            front1 = 0;
+        }
+
+        itemCount1--;
+    } else if (qn == 2) {
+        data = queue2[front2++];
+
+        if (front2 == MAX) {
+            front2 = 0;
+        }
+
+        itemCount2--;
+    }
+
+
+
+    return data;
+}
+
+
+
+
+
 
 struct {
   struct spinlock lock;
@@ -85,6 +212,8 @@ found:
   release(&tickslock);
   p->ctime = xticks;
   p->rtime = 0;
+    p->priority=3;
+
 
   return p;
 }
@@ -366,6 +495,22 @@ scheduler(void)
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
+
+      //my
+      int min=-1;
+      int temp=-1;
+      int min_pid=-1;
+      for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+          if(p->state != RUNNABLE)
+              continue;
+          temp=p->rtime/(ticks-p->ctime);
+          if(min>temp){
+              min = temp;
+              min_pid=p->pid;
+          }
+      }
+
+
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
         continue;
@@ -374,6 +519,14 @@ scheduler(void)
 
             if (!isEmpty() && p != peek())
                 continue;
+        }
+        else if(policy==2){
+
+            if(p->pid!=min_pid)
+                continue;
+
+        } else if(policy==3){
+
         }
 
 

@@ -8,56 +8,6 @@
 #include "traps.h"
 #include "spinlock.h"
 
-//my
-struct proc* queue[MAX];
-int front = 0;
-int rear = -1;
-int itemCount = 0;
-
-struct proc* peek() {
-    return queue[front];
-}
-
-bool isEmpty() {
-    return itemCount == 0;
-}
-
-bool isFull() {
-    return itemCount == MAX;
-}
-
-int size() {
-    return itemCount;
-}
-
-void insert(struct proc* data) {
-
-    if(!isFull()) {
-
-        if(rear == MAX-1) {
-            rear = -1;
-        }
-
-        queue[++rear] = data;
-        itemCount++;
-    }
-}
-
-struct proc* removeData() {
-    struct proc* data = queue[front++];
-
-    if(front == MAX) {
-        front = 0;
-    }
-
-    itemCount--;
-    return data;
-}
-
-
-
-
-
 
 
 

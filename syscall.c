@@ -101,6 +101,7 @@ extern int sys_uptime(void);
 //my
 extern int sys_getppid(void);
 extern int sys_getPerformanceData(void);
+extern int sys_nice(void);
 //end my
 
 static int (*syscalls[])(void) = {
@@ -127,6 +128,7 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 /*my*/[SYS_getppid] sys_getppid,/*end my*/
 /*my*/[SYS_getPerformanceData] sys_getPerformanceData,/*end my*/
+        /*my*/[SYS_nice] sys_nice,/*end my*/
 };
 
 void

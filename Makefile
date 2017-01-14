@@ -157,7 +157,7 @@ mkfs: mkfs.c fs.h
 # http://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 
 #my
-#i added _getppid\ _getPerformanceData\ in below code
+#i added _getppid\ waittest\ _nice\ in below code
 #end my
 
 .PRECIOUS: %.o
@@ -180,6 +180,7 @@ UPROGS=\
 	_zombie\
 	_getppid\
 	_waittest\
+	_nice\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

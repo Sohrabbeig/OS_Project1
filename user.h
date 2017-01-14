@@ -27,6 +27,7 @@ int uptime(void);
 
 int getppid(void);
 int getPerformanceData(int*, int*);
+int nice(void);
 //end my
 
 

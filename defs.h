@@ -167,13 +167,6 @@ extern uint     counter;
 void            tvinit(void);
 extern struct spinlock tickslock;
 
-extern struct proc*              peek(void);
-extern bool              isEmpty(void);
-extern bool            isFull(void) ;
-extern int       size(void);
-extern void      insert(struct proc* data);
-extern struct proc* removeData(void);
-
 // uart.c
 void            uartinit(void);
 void            uartintr(void);
