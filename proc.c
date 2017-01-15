@@ -450,8 +450,8 @@ wait2(void)
         char *wtime=0;
         argptr(0,&rtime,sizeof(int));
         argptr(1,&wtime,sizeof(int));
-        *rtime=proc->rtime;
-        *wtime=proc->etime - proc->ctime - proc->rtime;
+        *rtime=p->rtime;
+        *wtime=p->etime - p->ctime - p->rtime;
 
 
         release(&ptable.lock);
