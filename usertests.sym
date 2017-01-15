@@ -12,11 +12,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 usertests.c
-00006200 args.1399
+00006200 args.1401
 00000000 ulib.c
 00000000 printf.c
 00003d60 printint
-00005907 digits.1035
+00005907 digits.1037
 00000000 umalloc.c
 00006280 freep
 00006284 base
@@ -73,6 +73,7 @@
 00000000 main
 00001310 createdelete
 00003d42 getppid
+00003d52 nice
 00003ab0 strcmp
 000004b0 writetest
 00003d1a dup

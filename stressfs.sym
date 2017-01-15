@@ -14,7 +14,7 @@
 00000000 ulib.c
 00000000 printf.c
 00000420 printint
-00000850 digits.1035
+00000850 digits.1037
 00000000 umalloc.c
 00000acc freep
 00000ad0 base
@@ -44,6 +44,7 @@
 000001f0 memset
 00000000 main
 00000402 getppid
+00000412 nice
 00000170 strcmp
 000003da dup
 000002b0 stat

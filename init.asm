@@ -762,10 +762,12 @@ SYSCALL(getPerformanceData)
  3da:	b8 17 00 00 00       	mov    $0x17,%eax
  3df:	cd 40                	int    $0x40
  3e1:	c3                   	ret    
- 3e2:	66 90                	xchg   %ax,%ax
- 3e4:	66 90                	xchg   %ax,%ax
- 3e6:	66 90                	xchg   %ax,%ax
- 3e8:	66 90                	xchg   %ax,%ax
+
+000003e2 <nice>:
+SYSCALL(nice)
+ 3e2:	b8 18 00 00 00       	mov    $0x18,%eax
+ 3e7:	cd 40                	int    $0x40
+ 3e9:	c3                   	ret    
  3ea:	66 90                	xchg   %ax,%ax
  3ec:	66 90                	xchg   %ax,%ax
  3ee:	66 90                	xchg   %ax,%ax

@@ -1044,10 +1044,12 @@ SYSCALL(getPerformanceData)
  64a:	b8 17 00 00 00       	mov    $0x17,%eax
  64f:	cd 40                	int    $0x40
  651:	c3                   	ret    
- 652:	66 90                	xchg   %ax,%ax
- 654:	66 90                	xchg   %ax,%ax
- 656:	66 90                	xchg   %ax,%ax
- 658:	66 90                	xchg   %ax,%ax
+
+00000652 <nice>:
+SYSCALL(nice)
+ 652:	b8 18 00 00 00       	mov    $0x18,%eax
+ 657:	cd 40                	int    $0x40
+ 659:	c3                   	ret    
  65a:	66 90                	xchg   %ax,%ax
  65c:	66 90                	xchg   %ax,%ax
  65e:	66 90                	xchg   %ax,%ax

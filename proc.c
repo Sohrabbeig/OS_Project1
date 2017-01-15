@@ -32,12 +32,6 @@ struct proc* peek(int qn) {
 
     return queue2[front2];
 
-    if(qn==0)
-        return ;
-    else if(qn==1)
-        return ;
-
-    return ;
 }
 
 bool isEmpty(int qn) {
@@ -98,7 +92,7 @@ void insert(struct proc* data,int qn) {
 struct proc* removeData(int qn) {
 
 
-    struct proc *data;
+    struct proc *data=0;
     if (qn == 0) {
         data = queue[front++];
 
@@ -212,7 +206,7 @@ found:
   release(&tickslock);
   p->ctime = xticks;
   p->rtime = 0;
-    p->priority=3;
+    p->priority=0;
 
 
   return p;
@@ -252,7 +246,7 @@ userinit(void)
   acquire(&ptable.lock);
 
   p->state = RUNNABLE;
-    insert(p);
+    insert(p,p->priority);
 
   release(&ptable.lock);
 }
@@ -317,7 +311,7 @@ fork(void)
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
-    insert(np);
+    insert(np,np->priority);
 
   release(&ptable.lock);
 
@@ -497,53 +491,82 @@ scheduler(void)
     acquire(&ptable.lock);
 
       //my
-      int min=-1;
-      int temp=-1;
-      int min_pid=-1;
-      for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-          if(p->state != RUNNABLE)
-              continue;
-          temp=p->rtime/(ticks-p->ctime);
-          if(min>temp){
-              min = temp;
-              min_pid=p->pid;
+      int min = -1;
+      int temp = -1;
+      int min_pid = -1;
+      int pri_pid=-1;
+      if(policy==2) {
+
+          for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+              if (p->state != RUNNABLE)
+                  continue;
+              temp = p->rtime / (ticks - p->ctime);
+              if (min > temp) {
+                  min = temp;
+                  min_pid = p->pid;
+              }
+          }
+
+      } else if(policy==3){
+
+          if(!isEmpty(0)){
+              int i=0;
+              for (i=0; i<MAX; i++) {
+                  if (queue[i] &&  queue[i]->state != RUNNABLE )
+                      continue;
+                  temp = queue[i]->rtime / (ticks - queue[i]->ctime);
+                  if (min > temp) {
+                      min = temp;
+                      pri_pid = queue[i]->pid;
+                  }
+              }
+
+          } else if(!isEmpty(1)){
+              pri_pid=peek(1)->pid;
+
+          } else{
+
+
           }
       }
 
 
-    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
-        continue;
 
-        if(policy==1) {
+    for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+        if (p->state != RUNNABLE)
+            continue;
 
-            if (!isEmpty() && p != peek())
+        if (policy == 1) {
+
+            if (!isEmpty(0) && p != peek(0))
+                continue;
+        } else if (policy == 2) {
+
+            if (p->pid != min_pid)
+                continue;
+
+        } else if(policy==3 && p->priority!=2){
+            if (p->pid != pri_pid)
                 continue;
         }
-        else if(policy==2){
-
-            if(p->pid!=min_pid)
-                continue;
-
-        } else if(policy==3){
-
-        }
 
 
 
-      // Switch to chosen process.  It is the process's job
-      // to release ptable.lock and then reacquire it
-      // before jumping back to us.
-      proc = p;
-      switchuvm(p);
-      p->state = RUNNING;
-      swtch(&cpu->scheduler, p->context);
-      switchkvm();
+        // Switch to chosen process.  It is the process's job
+        // to release ptable.lock and then reacquire it
+        // before jumping back to us.
+        proc = p;
+        switchuvm(p);
+        p->state = RUNNING;
+        removeData(p->priority);
+        swtch(&cpu->scheduler, p->context);
+        switchkvm();
 
-      // Process is done running for now.
-      // It should have changed its p->state before coming back.
-      proc = 0;
+        // Process is done running for now.
+        // It should have changed its p->state before coming back.
+        proc = 0;
     }
+
     release(&ptable.lock);
 
   }
@@ -581,7 +604,7 @@ yield(void)
   acquire(&ptable.lock);  //DOC: yieldlock
   proc->state = RUNNABLE;
     //my
-    insert(proc);
+    insert(proc,proc->priority);
   sched();
   release(&ptable.lock);
 }
@@ -656,7 +679,7 @@ wakeup1(void *chan)
     if(p->state == SLEEPING && p->chan == chan) {
         p->state = RUNNABLE;
         //my
-        insert(p);
+        insert(p,p->priority);
     }
 }
 
@@ -684,7 +707,7 @@ kill(int pid)
       // Wake process from sleep if necessary.
       if(p->state == SLEEPING) {
           p->state = RUNNABLE;
-            insert(p);
+            insert(p,p->priority);
       }
       release(&ptable.lock);
       return 0;

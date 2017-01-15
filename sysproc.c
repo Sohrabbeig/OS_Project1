@@ -115,8 +115,8 @@ int sys_getPerformanceData(void){
 
 int sys_nice(){
 
-    if(proc->priority>0)
-        proc->priority--;
+    if(proc->priority < 2)
+        proc->priority++;
     else
         return -1;
 

@@ -11,11 +11,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 ls.c
-00000d98 buf.1046
+00000d98 buf.1048
 00000000 ulib.c
 00000000 printf.c
 00000660 printint
-00000ab7 digits.1035
+00000ab7 digits.1037
 00000000 umalloc.c
 00000da8 freep
 00000dac base
@@ -46,6 +46,7 @@
 00000430 memset
 00000000 main
 00000642 getppid
+00000652 nice
 000003b0 strcmp
 0000061a dup
 000004f0 stat
